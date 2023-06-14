@@ -113,7 +113,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
   }
 
   Future getData() async {
-    var url = 'https://ourpetsgps.000webhostapp.com/get.php';
+    var url = 'http://82.165.248.152/get.php';
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var data = RequestReceiver.fromJson(jsonDecode(response.body));
