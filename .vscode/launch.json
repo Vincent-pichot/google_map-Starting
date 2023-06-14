@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "google_map-Starting",
+            "cwd": "google_map-Starting",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "google_map-Starting (profile mode)",
+            "cwd": "google_map-Starting",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "google_map-Starting (release mode)",
+            "cwd": "google_map-Starting",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
