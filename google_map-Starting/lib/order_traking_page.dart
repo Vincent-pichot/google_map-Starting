@@ -116,10 +116,14 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
     var url = 'http://82.165.248.152/get.php';
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
-      var data = RequestReceiver.fromJson(jsonDecode(response.body));
-      destination =
-          LatLng(double.parse(data.latitude), double.parse(data.latitude));
-      print(destination);
+      // var data = RequestReceiver.fromJson(jsonDecode(response.body));
+      var data = jsonDecode(response.body);
+      var data2 = RequestReceiver.fromJson(data.last);
+      // destination =
+      // LatLng(double.parse(data.latitude), double.parse(data.latitude));
+      print(data);
+      print(data2.latitude);
+      print(data2.longitude);
     }
     print(response.statusCode);
     // print(data.toString());
