@@ -119,13 +119,14 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
       // var data = RequestReceiver.fromJson(jsonDecode(response.body));
       var data = jsonDecode(response.body);
       var data2 = RequestReceiver.fromJson(data.last);
-      // destination =
-      // LatLng(double.parse(data.latitude), double.parse(data.latitude));
-      print(data);
-      print(data2.latitude);
-      print(data2.longitude);
+      destination =
+          LatLng(double.parse(data2.latitude), double.parse(data2.latitude));
+      // print(destination);
+      // print(data);
+      // print(data2.latitude);
+      // print(data2.longitude);
     }
-    print(response.statusCode);
+    // print(response.statusCode);
     // print(data.toString());
   }
 
@@ -138,9 +139,14 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
           style: TextStyle(color: Colors.black, fontSize: 16),
         ),
       ),
-      body: currentLocation == null
-          ? const Center(child: Text("Loading"))
-          : GoogleMap(
+      body: 
+      currentLocation == null
+          ? Center(child:
+            TextButton(child: const Text("View you pet location"), onPressed: () =>  setState(() {}))
+          )
+          :
+          GoogleMap(
+              myLocationButtonEnabled: true,
               initialCameraPosition: CameraPosition(
                 target: LatLng(
                     currentLocation!.latitude!, currentLocation!.longitude!),
