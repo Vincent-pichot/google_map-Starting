@@ -120,11 +120,11 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
       var data = jsonDecode(response.body);
       var data2 = RequestReceiver.fromJson(data.last);
       destination =
-          LatLng(double.parse(data2.latitude), double.parse(data2.latitude));
-      // print(destination);
-      // print(data);
-      // print(data2.latitude);
-      // print(data2.longitude);
+          LatLng(double.parse(data2.latitude), double.parse(data2.longitude));
+      print(destination);
+      print(data);
+      print(data2.latitude);
+      print(data2.longitude);
     }
     // print(response.statusCode);
     // print(data.toString());
