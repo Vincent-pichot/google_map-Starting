@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-//import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_mao/constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -31,9 +31,19 @@ class RequestReceiver {
 class OrderTrackingPageState extends State<OrderTrackingPage> {
   final Completer<GoogleMapController> _controller = Completer();
 
+  // this will hold the generated polylines
+  // Set<Polyline> _polylines = {};
+  // // this will hold each polyline coordinate as Lat and Lng pairs
+  List<LatLng> polylineCoordinates = [];
+  // // this is the key object - the PolylinePoints
+  // // which generates every polyline between start and finish
+  // PolylinePoints polylinePoints = PolylinePoints();
+  // String googleAPIKey = ;
+  Timer? timer;
+
   LatLng destination = LatLng(37.33429383, -122.06600055);
 
-  List<LatLng> polylineCoordinates = [];
+  // List<LatLng> polylineCoordinates = [];
   LocationData? currentLocation;
 
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
@@ -70,24 +80,35 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
     );
   }
 
-/*
-  void getPolyPoints() async {
-    PolylinePoints polylinePoints = PolylinePoints();
+  // setPolylines() async {
+  //   List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
+  //       googleAPIKey,
+  //       PointLatLng(currentLocation!.latitude!),
+  //       PointLatLng(currentLocation!.longitude!),
+  //       DEST_LOCATION.latitude,
+  //       DEST_LOCATION.longitude);
+  //   if (result.isNotEmpty) {
+  //     // loop through all PointLatLng points and convert them
+  //     // to a list of LatLng, required by the Polyline
+  //     result.forEach((PointLatLng point) {
+  //       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+  //     });
+  //   }
 
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        google_api_key,
-        PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
-        PointLatLng(sourceLocation.latitude, destination.longitude));
+  //   setState(() {
+  //     // create a Polyline instance
+  //     // with an id, an RGB color and the list of LatLng pairs
+  //     Polyline polyline = Polyline(
+  //         polylineId: PolylineId("poly"),
+  //         color: Color.fromARGB(255, 40, 122, 198),
+  //         points: polylineCoordinates);
 
-    if (result.points.isNotEmpty) {
-      result.points.forEach(
-        (PointLatLng point) =>
-            polylineCoordinates.add(LatLng(point.latitude, point.longitude)),
-      );
-      setState(() {});
-    }
-  }
-*/
+  //     // add the constructed polyline as a set of points
+  //     // to the polyline set, which will eventually
+  //     // end up showing up on the map
+  //     _polylines.add(polyline);
+  //   });
+  // }
 
   void setCustomMarkerIcon() {
     BitmapDescriptor.fromAssetImage(
@@ -108,6 +129,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
     getData();
     getCurrentLocation();
     setCustomMarkerIcon();
+    timer = Timer.periodic(const Duration(seconds: 180), (Timer t) {getData();setState(() {});} );
     //getPolyPoints();
     super.initState();
   }
@@ -139,14 +161,12 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
           style: TextStyle(color: Colors.black, fontSize: 16),
         ),
       ),
-      body: 
-      currentLocation == null
-          ? Center(child:
-            TextButton(child: const Text("View you pet location"), onPressed: () =>  setState(() {}))
-          )
-          :
-          GoogleMap(
-              myLocationButtonEnabled: true,
+      body: currentLocation == null
+          ? Center(
+              child: TextButton(
+                  child: const Text("View you pet location"),
+                  onPressed: () => setState(() {})))
+          : GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: LatLng(
                     currentLocation!.latitude!, currentLocation!.longitude!),
@@ -174,6 +194,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
               }, //Markers
               onMapCreated: (mapController) {
                 _controller.complete(mapController);
+                // setPolylines();
               },
             ),
     );
